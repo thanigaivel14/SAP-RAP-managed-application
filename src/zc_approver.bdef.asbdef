@@ -1,0 +1,23 @@
+projection;
+strict ( 2 );
+
+define behavior for zc_approver alias Travel
+{
+//  use create;
+  use update;
+//  use delete;
+
+//  use action copyTravel;
+  use action acceptTravel;
+  use action rejectTravel;
+
+//  use association _Booking { create; }
+}
+
+//define behavior for zc_approver_booking alias Booking
+//{
+//  use update;
+//  use delete;
+//
+//  use association _Travel;
+//}

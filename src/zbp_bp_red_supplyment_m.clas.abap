@@ -1,0 +1,5 @@
+CLASS zbp_bp_red_supplyment_m DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_red_travel.
+ENDCLASS.
+
+CLASS zbp_bp_red_supplyment_m IMPLEMENTATION.
+ENDCLASS.

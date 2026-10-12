@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service defenition for approver'
+define service Zui_approver {
+  expose zc_approver;
+  expose zc_approver_booking;
+}

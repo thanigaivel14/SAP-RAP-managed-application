@@ -1,0 +1,6 @@
+@EndUserText.label: 'Service defenition for travel app'
+define service Zser_travel {
+  expose zc_red_travel;
+  expose zc_booking_projection;
+  expose zc_supply_projection;
+}

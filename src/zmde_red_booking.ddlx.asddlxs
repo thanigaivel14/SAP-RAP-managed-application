@@ -1,0 +1,70 @@
+@Metadata.layer: #CORE
+@UI.headerInfo:{
+typeName: 'Book',
+typeNamePlural: 'Bookings',
+title:{
+value: 'FirstName' ,
+type: #STANDARD,
+label: 'Booking'
+}
+}
+@Search.searchable: true
+annotate entity zc_booking_projection with
+{
+  @UI.facet: [{
+  id:'Bookings',
+  label: 'Bookings',
+  purpose: #STANDARD,
+  type:#IDENTIFICATION_REFERENCE,
+  position: 1
+   },
+   {
+  id:'Supplement',
+  label: 'Supplements',
+  purpose: #STANDARD,
+  type:#LINEITEM_REFERENCE,
+  targetElement: '_supply',
+  position: 2
+   }]
+  @UI.lineItem: [{ position: 1 }]
+  @UI.identification: [{  position: 1}]
+  @Search.defaultSearchElement: true
+  BookingId;
+  @UI.lineItem: [{ position: 2 }]
+  @UI.identification: [{  position: 2}]
+  BookingDate;
+  @UI.lineItem: [{ position: 3 }]
+  @UI.identification: [{  position: 3}]
+  @UI.selectionField: [{position: 10}]
+  CarrierId;
+  @UI.lineItem: [{ position: 4 }]
+  @UI.identification: [{  position: 4}]
+  ConnectionId;
+  @UI.lineItem: [{ position: 5 }]
+  @UI.identification: [{  position: 5}]
+  FlightDate;
+  @UI.lineItem: [{ position: 6 }]
+  @UI.identification: [{  position: 6}]
+  FlightPrice;
+  @UI.identification: [{ position: 6.5 }]
+   @Consumption.valueHelpDefinition: [{ entity: {
+    name: 'I_Currency',
+    element: 'Currency'
+  } }]
+  CurrencyCode;
+  @UI.lineItem: [{ position: 7 }]
+  @UI.identification: [{  position: 7}]
+      @Consumption.valueHelpDefinition: [{ entity: {
+   name: '/DMO/I_Overall_Status_VH',
+   element: 'OverallStatus'
+  } }]
+      BookingStatus;
+  @Search.defaultSearchElement: true
+
+  BookingStatusText;
+  @UI.lineItem: [{ position: 8 }]
+  _supply;
+  @UI.hidden: true
+  FirstName;
+
+}

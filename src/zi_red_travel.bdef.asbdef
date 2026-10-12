@@ -1,0 +1,107 @@
+managed  implementation in class zbp_bp_red_travel_m unique;
+//implementation in class zbp_i_red_travel unique;
+strict ( 2 );
+
+define behavior for zi_red_travel alias Travel
+implementation in class zbp_bp_red_travel_m unique
+persistent table zred_travel_m
+lock master
+authorization master ( instance )
+with additional save
+early numbering
+etag master LastChangedAt
+{
+  create ( authorization : global );
+  factory action copyTravel [1];
+  internal action recalTotalPrice;
+  action ( features : instance ) acceptTravel result [1] $self;
+  action ( features : instance ) rejectTravel result [1] $self;
+  update;
+  delete;
+  field ( readonly ) TravelId, LastChangedAt, LastChangedBy, CreatedBy, CreatedAt;
+  field ( mandatory ) CustomerId, BeginDate;
+  validation validateCust on save { create; field CustomerId; }
+  validation validateBookdate on save { create; field BeginDate; }
+  determination TotalPriceDT on modify { create; field BookingFee, CurrencyCode; }
+  association _Booking { create ( features : instance ); }
+  mapping for zred_travel_m
+    {
+      TravelId      = travel_id;
+      AgencyId      = agency_id;
+      CustomerId    = customer_id;
+      BeginDate     = begin_date;
+      BookingFee    = booking_fee;
+      CreatedAt     = created_at;
+      CreatedBy     = created_by;
+      EndDate       = end_date;
+      Description   = description;
+      TotalPrice    = total_price;
+      LastChangedAt = last_changed_at;
+      LastChangedBy = last_changed_by;
+      OverallStatus = overall_status;
+      CurrencyCode  = currency_code;
+    }
+
+}
+
+
+
+
+define behavior for ZI_RED_BOOK alias Booking
+implementation in class zbp_bp_red_booking_m unique
+persistent table zred_book_m
+lock dependent by _Travel
+authorization dependent by _Travel
+etag master LastChangedAt
+early numbering
+{
+  update;
+  delete;
+  field ( readonly ) TravelId, BookingId, LastChangedAt;
+  field ( readonly : update ) BookingDate, CustomerId;
+  association _Travel;
+  association _supply { create ( features : instance ); }
+  determination TotalPriceDT on modify { create; field FlightPrice; }
+  mapping for zred_book_m
+    {
+      BookingId     = booking_id;
+      BookingDate   = booking_date;
+      BookingStatus = booking_status;
+      CarrierId     = carrier_id;
+      ConnectionId  = connection_id;
+      CurrencyCode  = currency_code;
+      CustomerId    = customer_id;
+      FlightDate    = flight_date;
+      FlightPrice   = flight_price;
+      LastChangedAt = last_changed_at;
+      TravelId      = travel_id;
+    }
+}
+
+define behavior for zi_red_supply alias Supplymenet
+implementation in class zbp_bp_red_supplyment_m unique
+persistent table zred_supply_m
+//with unmanaged save
+lock dependent by _Travel
+authorization dependent by _Travel
+etag master LastChangedAt
+early numbering
+{
+  update;
+  delete;
+  field ( readonly ) TravelId, BookingId, BookingSupplementId;
+  association _Travel;
+  association _Booking;
+  determination TotalPriceDT on modify { create; field Price; }
+  mapping for zred_supply_m
+    {
+      BookingId           = booking_id;
+      BookingSupplementId = booking_supplement_id;
+      CurrencyCode        = currency_code;
+      LastChangedAt       = last_changed_at;
+      Price               = price;
+      SupplementId        = supplement_id;
+      TravelId            = travel_id;
+
+    }
+}
